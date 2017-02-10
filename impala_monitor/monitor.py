@@ -27,10 +27,9 @@ class ImpalaMonitor(object):
 
                 try:
                     data = future.result()
-                    self._stats.send(node, data)
 
                     if data:
-                        print("{} SEND TO STATSD".format(node))
+                        self._stats.send(node, data)
 
                 except Exception as exc:
                     print("Something went wrong {}".format(exc))
