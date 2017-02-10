@@ -1,12 +1,18 @@
 import json
 import concurrent.futures
 import requests
+import statsd
 
 
 class ImpalaMonitor(object):
-    def __init__(self, nodes, graphite_node):
+    def __init__(self, nodes, graphite_node, environment='staging'):
         self._nodes = nodes
         self._graphite_node = graphite_node
+        self._statsd = statsd.StatsClient(
+            graphite_node, 8125, 'dwh.testing'
+        )
+
+        print(self._statsd.gauge('test', 23))
 
     def run(self):
         nodes = self.parse_nodes(self._nodes)
