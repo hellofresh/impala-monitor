@@ -18,7 +18,7 @@ class ImpalaMonitor(object):
 
     def run(self):
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            futures = {executor.submit(self.load_url, node, 30): node for 
+            futures = {executor.submit(self.load_url, node, 30): node for
                        node in self._nodes}
 
             for future in concurrent.futures.as_completed(futures):
