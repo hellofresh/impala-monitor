@@ -2,7 +2,7 @@ import re
 
 
 class ImpalaStats(object):
-    items_to_track = [
+    ITEMS_TO_TRACK = [
         'admission-controller.*',
         'jvm.total.*',
         'impala.thrift-server.*',
@@ -15,7 +15,7 @@ class ImpalaStats(object):
 
     def send(self, node, payload):
         for key in payload:
-            for pattern in self.items_to_track:
+            for pattern in self.ITEMS_TO_TRACK:
                 if re.match(pattern, key):
 
                     extended_key = "{}.{}".format(
