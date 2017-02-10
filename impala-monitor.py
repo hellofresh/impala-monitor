@@ -11,8 +11,8 @@ from impala_monitor.monitor import ImpalaMonitor
               default=1)
 @click.option('--graphite-node', help='To which graphite should send the data')
 @click.option('--env', help='Whichi environment this is running', default='staging')
-def monitor(nodes, seconds, graphite_node, environment):
-    monitor = ImpalaMonitor(nodes, graphite_node, environment)
+def monitor(nodes, seconds, graphite_node, env):
+    monitor = ImpalaMonitor(nodes, graphite_node, env)
 
     scheduler = AsyncIOScheduler()
     scheduler.add_job(monitor.run, 'interval', seconds=seconds)

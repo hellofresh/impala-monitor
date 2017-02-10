@@ -3,16 +3,18 @@ import concurrent.futures
 import requests
 import statsd
 
+from .stats import ImpalaStats
+
 
 class ImpalaMonitor(object):
     def __init__(self, nodes, graphite_node, environment='staging'):
         self._nodes = nodes
         self._graphite_node = graphite_node
         self._statsd = statsd.StatsClient(
-            graphite_node, 8125, 'dwh.testing'
+            graphite_node, 8125, 'dwh.{}.impala'.format(environment)
         )
 
-        print(self._statsd.gauge('test', 23))
+        self._stats = ImpalaStats(self._statsd)
 
     def run(self):
         nodes = self.parse_nodes(self._nodes)
@@ -25,6 +27,7 @@ class ImpalaMonitor(object):
 
                 try:
                     data = future.result()
+                    self._stats.send(node, data)
 
                     if data:
                         print("{} SEND TO STATSD".format(node))
