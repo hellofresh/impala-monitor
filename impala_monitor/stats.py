@@ -17,7 +17,4 @@ class ImpalaStats(object):
                         node.replace(':25000', ''), key
                     )
 
-                    print(extended_key)
-
                     self._statsd.gauge(extended_key, int(payload[key]))
-
