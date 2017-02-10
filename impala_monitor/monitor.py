@@ -8,7 +8,7 @@ from .stats import ImpalaStats
 
 class ImpalaMonitor(object):
     def __init__(self, nodes, graphite_node, environment='staging'):
-        self._nodes = nodes
+        self._nodes = self.parse_nodes(nodes)
         self._graphite_node = graphite_node
         self._statsd = statsd.StatsClient(
             graphite_node, 8125, 'dwh.{}.impala'.format(environment)
@@ -17,10 +17,9 @@ class ImpalaMonitor(object):
         self._stats = ImpalaStats(self._statsd)
 
     def run(self):
-        nodes = self.parse_nodes(self._nodes)
-
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            futures = {executor.submit(self.load_url, node, 30): node for node in nodes}
+            futures = {executor.submit(self.load_url, node, 30): node for 
+                       node in self._nodes}
 
             for future in concurrent.futures.as_completed(futures):
                 node = futures[future]
