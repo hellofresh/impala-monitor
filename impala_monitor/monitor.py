@@ -7,11 +7,11 @@ from .stats import ImpalaStats
 
 
 class ImpalaMonitor(object):
-    def __init__(self, nodes, graphite_node, environment='staging'):
+    def __init__(self, nodes, graphite_node, graphite_port, graphite_prefix):
         self._nodes = self.parse_nodes(nodes)
         self._graphite_node = graphite_node
         self._statsd = statsd.StatsClient(
-            graphite_node, 8125, 'dwh.{}.impala'.format(environment)
+            graphite_node, graphite_port, graphite_prefix
         )
 
         self._stats = ImpalaStats(self._statsd)
