@@ -19,6 +19,7 @@ class ImpalaStats(object):
                 if re.match(pattern, key):
 
                     extended_key = "{}.{}".format(
-                        node.replace(':25000', ''), key
+                        node.replace(':25000', '').replace('.', '_'), key
                     )
+
                     self._statsd.gauge(extended_key, int(payload[key]))
