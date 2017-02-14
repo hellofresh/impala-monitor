@@ -245,7 +245,7 @@
               {
                 "evaluator": {
                   "params": [
-                    19
+                    'SOME VALUE'
                   ],
                   "type": "gt"
                 },
@@ -274,7 +274,7 @@
             "executionErrorState": "alerting",
             "frequency": "30s",
             "handler": 1,
-            "message": "Number of queries is higher or equal than 20",
+            "message": "Number of queries is higher or equal than X",
             "name": "Number of Queries running alert",
             "noDataState": "no_data",
             "notifications": [
