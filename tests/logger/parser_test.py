@@ -1,6 +1,6 @@
 import os
 from unittest import TestCase
-
+from datetime import datetime
 from impala_monitor.logger.parser import ImpalaQueryLogParser
 
 
@@ -31,3 +31,7 @@ class ImpalaQueryLogParserTest(TestCase):
         queries = parser.queries
 
         self.assertEqual(20, len(queries))
+
+        for query in queries:
+            self.assertIsInstance(query['start_time'], datetime)
+            self.assertIsInstance(query['end_time'], datetime)

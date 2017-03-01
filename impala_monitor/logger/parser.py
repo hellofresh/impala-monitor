@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 
 class ImpalaQueryLogParser(object):
@@ -35,8 +36,10 @@ class ImpalaQueryLogParser(object):
                 'state': query_state,
                 'fetched_rows': int(cells[8].get_text()),
                 'user': cells[0].get_text(),
-                'start_time': cells[4].get_text(),
-                'end_time': cells[5].get_text(),
+                'start_time': datetime.strptime(cells[4].get_text(),
+                                                "%Y-%m-%d %H:%M:%S.%f000"),
+                'end_time': datetime.strptime(cells[5].get_text(),
+                                              "%Y-%m-%d %H:%M:%S.%f000"),
             })
 
         return queries
