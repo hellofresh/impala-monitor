@@ -8,6 +8,8 @@ requirements = [
     'requests',
     'click',
     'apscheduler'
+    'coverage',
+    'nose'
 ]
 
 test_requirements = [

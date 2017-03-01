@@ -2,3 +2,6 @@ statsd==3.2.1
 requests
 click
 apscheduler
+coverage
+nose
+beautifulsoup4
