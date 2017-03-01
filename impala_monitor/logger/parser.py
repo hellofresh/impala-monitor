@@ -13,10 +13,6 @@ class Query(object):
 
         return self.query[item]
 
-    # @property
-    # def query(self):
-    #     return self.query
-
 
 class ImpalaQueryLogParser(object):
     def __init__(self, html: str):
