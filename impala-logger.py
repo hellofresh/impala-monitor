@@ -9,11 +9,11 @@ from impala_monitor.logger.logger import ImpalaLogger
 @click.option('--nodes', help='List of nodes to track separated by a comma')
 @click.option('--seconds', help='Every how many seconds should be executed',
               default=1)
-@click.option('--kibana-node', help='To which Kibana should send the data')
-@click.option('--kibana-port', help='To which Kibana port should '
-                                      'connect', default=8125)
-def monitor(nodes, seconds, kibana_node, kibana_port):
-    monitor = ImpalaLogger(nodes.split(','), kibana_node, kibana_port)
+@click.option('--elastic-node', help='To which Elastic should send the data')
+@click.option('--elastic-port', help='To which Elastic port should '
+                                      'connect', default=9200)
+def monitor(nodes, seconds, elastic_node, elastic_port):
+    monitor = ImpalaLogger(nodes.split(','), elastic_node, elastic_port)
     scheduler = AsyncIOScheduler()
     scheduler.add_job(monitor.run, 'interval', seconds=seconds)
     scheduler.start()

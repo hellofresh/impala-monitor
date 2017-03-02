@@ -1,6 +1,6 @@
 import re
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class Query(object):
@@ -17,6 +17,18 @@ class Query(object):
     def __setattr__(self, key, value):
         self.__dict__[key] = value
 
+    def to_dict(self):
+        new_dict = {}
+        for key in self.__dict__:
+            value = self.__dict__[key]
+            if isinstance(value, datetime):
+                value = value.strftime('%Y-%m-%d %H:%M:%S.%f')
+            if isinstance(value, timedelta):
+                value = value.total_seconds()
+
+            new_dict[key] = value
+
+        return new_dict
 
 class Converter(object):
     @staticmethod

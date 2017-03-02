@@ -1,24 +1,39 @@
 import concurrent.futures
 import requests
 
+from elasticsearch import Elasticsearch
 from lru import LRU
 
 from .parser import Query
 from .parser import ImpalaQueryLogParser
 
 
+class ElasticFactory(object):
+    def __init__(self, host: str, port: str):
+        self.port = port
+        self.host = host
+
+    def create(self) -> Elasticsearch:
+        return Elasticsearch(
+            [{'host': self.host, 'port': self.port}]
+        )
+
+
 class ImpalaLogger(object):
     def __init__(
             self,
             nodes: list,
-            kibana_host: str,
-            kibana_port: int,
+            elastic_host: str,
+            elastic_port: int,
             lru_size: int = 5000
     ):
-        self.kibana_port = kibana_port
-        self.kibana_host = kibana_host
+        self.elastic_port = elastic_port
+        self.elastic_host = elastic_host
         self.nodes = nodes
         self.queries_logged = LRU(lru_size)
+        self.elasticsearch = ElasticFactory(
+            self.elastic_host, self.elastic_port
+        ).create()
 
     def run(self):
         """
@@ -50,7 +65,7 @@ class ImpalaLogger(object):
                 except Exception as e:
                     print("Something went wrong {}".format(e))
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
             futures = {
                 executor.submit(self.query_profiler, query, 2): query for
                 query in queries
@@ -59,8 +74,13 @@ class ImpalaLogger(object):
             for future in concurrent.futures.as_completed(futures):
                 try:
                     query = future.result()
-                    print(query.query_id, query.memory_allocated,
-                          query.vcores_allocated)
+
+                    # send to elastic
+                    self.elasticsearch.index(
+                        index='query_log', doc_type='query', id=query.query_id,
+                        body=query.to_dict()
+                    )
+
                 except Exception as e:
                     print('Something went wrong {}'.format(e))
 
