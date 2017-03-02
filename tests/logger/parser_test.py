@@ -3,6 +3,7 @@ from unittest import TestCase
 from datetime import datetime
 from impala_monitor.logger.parser import ImpalaQueryLogParser
 from impala_monitor.logger.parser import Query
+from impala_monitor.logger.parser import Converter
 
 
 class HtmlLoader(object):
@@ -22,6 +23,23 @@ class HtmlLoader(object):
         buffer.close()
 
         return html
+
+
+class ConverterTest(TestCase):
+    def test_convert_from_gb_to_mb(self):
+        value = Converter.convert('2.03GB', 'MB')
+
+        self.assertEqual(value, 2030)
+
+    def test_convert_from_mb_to_gb(self):
+        value = Converter.convert('323MB', 'GB')
+
+        self.assertEqual(0.323, value)
+
+    def test_convert_same_unit(self):
+        value = Converter.convert('2.34GB', 'GB')
+
+        self.assertEqual(value, 2.34)
 
 
 class ImpalaQueryLogParserTest(TestCase):
@@ -49,7 +67,7 @@ class ImpalaQueryLogParserTest(TestCase):
         html = HtmlLoader().load('impala_query_profile.html')
         parser = ImpalaQueryLogParser(html)
 
-        query = Query({'query_id': '1234'})
+        query = Query({'query_id': '1234', 'query': 'aaa'})
 
         query = parser.extract_profile(query)
 

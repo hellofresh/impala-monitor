@@ -5,13 +5,38 @@ from datetime import datetime
 
 class Query(object):
     def __init__(self, query: dict):
-        self.query = query
+        for key in query:
+            self.__dict__[key] = query[key]
 
     def __getattr__(self, item):
-        if item not in self.query:
+        if item not in self.__dict__:
             raise ValueError("Item {} does not exists".format(item))
 
-        return self.query[item]
+        return self.__dict__[item]
+
+    def __setattr__(self, key, value):
+        self.__dict__[key] = value
+
+
+class Converter(object):
+    @staticmethod
+    def convert(value: str, convert_to: str) -> int:
+        original_unit = str(value[len(value)-2:len(value)])
+        original_value = float(value[0:len(value)-2])
+
+        if convert_to not in ['GB', 'MB', 'TB']:
+            raise ValueError('Unit {} not valid'.format(original_unit))
+
+        if original_unit not in ['GB', 'MB', 'TB']:
+            raise ValueError('Unit {} not valid'.format(original_unit))
+
+        if original_unit == convert_to:
+            return original_value
+
+        if original_unit == 'GB' and convert_to == 'MB':
+            return round(original_value * 1000)
+        elif original_unit == 'MB' and convert_to == 'GB':
+            return original_value / 1000
 
 
 class ImpalaQueryLogParser(object):
@@ -75,14 +100,14 @@ class ImpalaQueryLogParser(object):
             'pre').get_text()
 
         if query.query not in ['GET_TABLES', 'GET_DATABASES']:
-            memory_allocated = re.search('Memory=([0-9\.GB]+)', profile).group(1)
+            memory_allocated = re.search('Memory=([0-9\.GBMB]+)',
+                                         profile).group(1)
             vcores_allocated = re.search('VCores=([0-9]+)', profile).group(1)
 
-            query = query.query
-            query['memory_allocated'] = memory_allocated
-            query['vcores_allocated'] = vcores_allocated
+            query.memory_allocated = memory_allocated
+            query.vcores_allocated = vcores_allocated
 
-        return Query(query)
+        return query
 
     @staticmethod
     def extract_query_id(link: str) -> str:

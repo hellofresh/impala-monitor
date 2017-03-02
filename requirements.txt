@@ -5,3 +5,4 @@ apscheduler
 coverage
 nose
 beautifulsoup4
+lru-dict
