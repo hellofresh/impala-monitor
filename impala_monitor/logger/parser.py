@@ -99,13 +99,21 @@ class ImpalaQueryLogParser(object):
         profile = self.soup.findAll('div', {'class': 'container'})[1].find(
             'pre').get_text()
 
-        if query.query not in ['GET_TABLES', 'GET_DATABASES']:
-            memory_allocated = re.search('Memory=([0-9\.GBMB]+)',
-                                         profile).group(1)
-            vcores_allocated = re.search('VCores=([0-9]+)', profile).group(1)
+        memory_allocated_matches = re.search('Memory=([0-9\.GBMB]+)', profile)
 
-            query.memory_allocated = memory_allocated
-            query.vcores_allocated = vcores_allocated
+        if memory_allocated_matches:
+            query.memory_allocated = Converter.convert(
+                memory_allocated_matches.group(1), 'MB'
+            )
+        else:
+            query.memory_allocated = 0
+
+        vcores_allocated_matches = re.search('VCores=([0-9]+)', profile)
+
+        if vcores_allocated_matches:
+            query.vcores_allocated = vcores_allocated_matches.group(1)
+        else:
+            query.vcores_allocated = 0
 
         return query
 
