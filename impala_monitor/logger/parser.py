@@ -30,6 +30,7 @@ class Query(object):
 
         return new_dict
 
+
 class Converter(object):
     @staticmethod
     def convert(value: str, convert_to: str) -> int:
