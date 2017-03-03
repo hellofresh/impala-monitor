@@ -156,9 +156,6 @@ class ImpalaQueryLogParser(object):
 
         if exec_summary:
             query.exec_summary = exec_summary
-        else:
-            print(query.query_id)
-            exit()
 
         return query
 
