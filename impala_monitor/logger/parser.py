@@ -144,7 +144,7 @@ class ImpalaQueryLogParser(object):
 
     def parse_exec_summary(self, query: Query, profile: str) -> Query:
         exec_summary_match = re.search(
-            '(?=ExecSummary)(.*)([a-z\sA-Z#\.\-0-9\:_\(\)]+)Query Timeline',
+            '(?=ExecSummary)(.*)([a-z\sA-Z#\.\-0-9\:_\(\),|]+)Query Timeline',
             profile
         )
 

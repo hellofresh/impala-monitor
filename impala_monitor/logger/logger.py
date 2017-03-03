@@ -39,8 +39,6 @@ class ElasticFactory(object):
             }
         }
 
-        elasticsearch.indices.delete('impala_queries')
-
         if not elasticsearch.indices.exists('impala_queries'):
             elasticsearch.indices.create('impala_queries')
             elasticsearch.indices.put_mapping(
