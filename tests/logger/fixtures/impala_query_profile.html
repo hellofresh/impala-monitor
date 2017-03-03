@@ -1,0 +1,122 @@
+
+<!DOCTYPE html> <html>   <head><title>Cloudera Impala</title> <link href='www/bootstrap/css/bootstrap.min.css' rel='stylesheet' media='screen'>  <style>  body {    padding-top: 60px;   }  </style> </head> <body><div class='navbar navbar-inverse navbar-fixed-top'>      <div class='navbar-inner'>        <div class='container'>          <a class='btn btn-navbar' data-toggle='collapse' data-target='.nav-collapse'>            <span class='icon-bar'></span>            <span class='icon-bar'></span>            <span class='icon-bar'></span>          </a>          <a class='brand' href='/'>Impala</a>          <div class='nav-collapse collapse'>            <ul class='nav'><li><a href="/">/</a></li><li><a href="/backends">/backends</a></li><li><a href="/catalog">/catalog</a></li><li><a href="/logs">/logs</a></li><li><a href="/memz">/memz</a></li><li><a href="/metrics">/metrics</a></li><li><a href="/queries">/queries</a></li><li><a href="/sessions">/sessions</a></li><li><a href="/threadz">/threadz</a></li><li><a href="/varz">/varz</a></li>            </ul>          </div>        </div>      </div>    </div>    <div class='container'><pre>Query (id=8644d3672885d50f:8710672a6a019782):
+  Summary:
+    Session ID: 624fb4b0bcfa6b32:db39ed7ff14c22bd
+    Session Type: HIVESERVER2
+    Start Time: 2017-02-28 22:16:17.322807000
+    End Time: 2017-02-28 22:16:17.492578000
+    Query Type: QUERY
+    Query State: FINISHED
+    Query Status: OK
+    Impala Version: impalad version 1.4.1 RELEASE (build 2b626c8e9f4c666d23872c228cf43daae4c9acbb)
+    User:
+    Connected User:
+    Delegated User:
+    Network Address: ::ffff:10.212.1.23:50320
+    Default Db: default
+    Sql Statement: SELECT *
+FROM (
+  select a.adid, if (b.status*a.status =0,'No','Yes') IsLoginAndRegistered from
+
+  --select all customers with a least one registered event
+  (select adid,  sum(if (event = 'registered' , 1 , 0 )) as status from
+  adjust.adjust_partitioned_by_week
+  group by adid ) as a
+  inner join
+
+  --select all customers with a least one login event
+  (select adid,  sum(if (event = 'login' , 1 , 0 )) as status from
+  adjust.adjust_partitioned_by_week
+  group by adid
+   ) as b
+  on a.adid=b.adid
+) `custom_sql_query`
+LIMIT 0
+    Plan:
+----------------
+Estimated Per-Host Requirements: Memory=2.13GB VCores=2
+WARNING: The following tables are missing relevant table and/or column statistics.
+adjust.adjust_partitioned_by_week
+
+F04:PLAN FRAGMENT [UNPARTITIONED]
+  10:EXCHANGE [UNPARTITIONED]
+     limit: 0
+     hosts=6 per-host-mem=unavailable
+     tuple-ids=1,4 row-size=46B cardinality=0
+
+F01:PLAN FRAGMENT [HASH(adid)]
+  DATASTREAM SINK [FRAGMENT=F04, EXCHANGE=10, UNPARTITIONED]
+  04:HASH JOIN [INNER JOIN, BROADCAST]
+  |  hash predicates: adid = adid
+  |  limit: 0
+  |  hosts=6 per-host-mem=2.00GB
+  |  tuple-ids=1,4 row-size=46B cardinality=unavailable
+  |
+  |--09:EXCHANGE [BROADCAST]
+  |     hosts=6 per-host-mem=0B
+  |     tuple-ids=4 row-size=23B cardinality=unavailable
+  |
+  06:AGGREGATE [MERGE FINALIZE]
+  |  output: sum(sum(if(event = 'registered', 1, 0)))
+  |  group by: adid
+  |  hosts=6 per-host-mem=128.00MB
+  |  tuple-ids=1 row-size=23B cardinality=unavailable
+  |
+  05:EXCHANGE [HASH(adid)]
+     hosts=6 per-host-mem=0B
+     tuple-ids=1 row-size=23B cardinality=unavailable
+
+F03:PLAN FRAGMENT [HASH(adid)]
+  DATASTREAM SINK [FRAGMENT=F01, EXCHANGE=09, BROADCAST]
+  08:AGGREGATE [MERGE FINALIZE]
+  |  output: sum(sum(if(event = 'login', 1, 0)))
+  |  group by: adid
+  |  hosts=6 per-host-mem=128.00MB
+  |  tuple-ids=4 row-size=23B cardinality=unavailable
+  |
+  07:EXCHANGE [HASH(adid)]
+     hosts=6 per-host-mem=0B
+     tuple-ids=4 row-size=23B cardinality=unavailable
+
+F02:PLAN FRAGMENT [RANDOM]
+  DATASTREAM SINK [FRAGMENT=F03, EXCHANGE=07, HASH(adid)]
+  03:AGGREGATE
+  |  output: sum(if(event = 'login', 1, 0))
+  |  group by: adid
+  |  hosts=6 per-host-mem=128.00MB
+  |  tuple-ids=4 row-size=23B cardinality=unavailable
+  |
+  02:SCAN HDFS [adjust.adjust_partitioned_by_week, RANDOM]
+     partitions=3687/3687 size=12.20GB
+     table stats: unavailable
+     column stats: unavailable
+     hosts=6 per-host-mem=32.00MB
+     tuple-ids=3 row-size=30B cardinality=unavailable
+
+F00:PLAN FRAGMENT [RANDOM]
+  DATASTREAM SINK [FRAGMENT=F01, EXCHANGE=05, HASH(adid)]
+  01:AGGREGATE
+  |  output: sum(if(event = 'registered', 1, 0))
+  |  group by: adid
+  |  hosts=6 per-host-mem=128.00MB
+  |  tuple-ids=1 row-size=23B cardinality=unavailable
+  |
+  00:SCAN HDFS [adjust.adjust_partitioned_by_week, RANDOM]
+     partitions=3687/3687 size=12.20GB
+     table stats: unavailable
+     column stats: unavailable
+     hosts=6 per-host-mem=32.00MB
+     tuple-ids=0 row-size=30B cardinality=unavailable
+----------------
+    Estimated Per-Host Mem: 2281701376
+    Estimated Per-Host VCores: 2
+    Tables Missing Stats: adjust.adjust_partitioned_by_week
+    Query Timeline: 170.143ms
+       - Start execution: 29.100us (29.100us)
+       - Planning finished: 156.346ms (156.317ms)
+       - Rows available: 168.943ms (12.596ms)
+       - Unregister query: 169.767ms (823.869us)
+  ImpalaServer:
+     - ClientFetchWaitTimer: 810.602us
+     - RowMaterializationTimer: 0ns
+</pre></div></body></html>

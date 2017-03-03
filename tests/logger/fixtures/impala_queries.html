@@ -1,0 +1,140 @@
+
+<!DOCTYPE html> <html>   <head><title>Cloudera Impala</title> <link href='www/bootstrap/css/bootstrap.min.css' rel='stylesheet' media='screen'>  <style>  body {    padding-top: 60px;   }  </style> </head> <body><div class='navbar navbar-inverse navbar-fixed-top'>      <div class='navbar-inner'>        <div class='container'>          <a class='btn btn-navbar' data-toggle='collapse' data-target='.nav-collapse'>            <span class='icon-bar'></span>            <span class='icon-bar'></span>            <span class='icon-bar'></span>          </a>          <a class='brand' href='/'>Impala</a>          <div class='nav-collapse collapse'>            <ul class='nav'><li><a href="/">/</a></li><li><a href="/backends">/backends</a></li><li><a href="/catalog">/catalog</a></li><li><a href="/logs">/logs</a></li><li><a href="/memz">/memz</a></li><li><a href="/metrics">/metrics</a></li><li><a href="/queries">/queries</a></li><li><a href="/sessions">/sessions</a></li><li><a href="/threadz">/threadz</a></li><li><a href="/varz">/varz</a></li>            </ul>          </div>        </div>      </div>    </div>    <div class='container'><h2>Queries</h2>This page lists all running queries, plus any completed queries that are archived in memory. The size of that archive is controlled with the --query_log_size command line parameter.<h3>0 queries in flight</h3>
+<table class='table table-hover table-border'><tr><th>User</th>
+<th>Default Db</th>
+<th>Statement</th>
+<th>Query Type</th>
+<th>Start Time</th>
+<th>Backend Progress</th>
+<th>State</th>
+<th># rows fetched</th>
+<th>Profile</th>
+<th>Action</th>
+</tr></table><h3>Query Locations</h3><table class='table table-hover table-bordered'><tr><th>Location</th><th>Number of Fragments</th></tr>
+<tr><td>mapr005.live.bi.hellofresh.io:22000<td><b>0</b></td></tr><tr><td>mapr004.live.bi.hellofresh.io:22000<td><b>0</b></td></tr><tr><td>mapr002.live.bi.hellofresh.io:22000<td><b>0</b></td></tr><tr><td>mapr001.live.bi.hellofresh.io:22000<td><b>0</b></td></tr><tr><td>mapr006.live.bi.hellofresh.io:22000<td><b>0</b></td></tr><tr><td>mapr003.live.bi.hellofresh.io:22000<td><b>0</b></td></tr></table><h3>Last 25 Completed Queries</h3><table class='table table-hover table-border'><tr><th>User</th>
+<th>Default Db</th>
+<th>Statement</th>
+<th>Query Type</th>
+<th>Start Time</th>
+<th>End Time</th>
+<th>Backend Progress</th>
+<th>State</th>
+<th># rows fetched</th>
+<th>Profile</th>
+</tr><tr><td>mapr</td><td>default</td><td>free -m</td><td>QUERY</td><td>2017-03-01 14:42:46.729984000</td><td>2017-03-01 14:42:46.730400000</td><td>N/A</td><td>EXCEPTION</td><td>0</td><td><a href='/query_profile?query_id=ed4442e934a6fe0a:b9e133a2da84b28a'>Profile</a></td></tr>
+<tr><td>mapr</td><td>default</td><td>select * from fact_tables.subscription_statuses a join fact_tables.subscription_statuses b on a.fk_subscription=b.fk_subscription limit 10</td><td>QUERY</td><td>2017-03-01 14:40:53.006533000</td><td>2017-03-01 14:40:59.996634000</td><td>3 / 5584 (0.0537249%)</td><td>EXCEPTION</td><td>0</td><td><a href='/query_profile?query_id=284e3ef7a7d4c773:7f9e013d9e3a9c9e'>Profile</a></td></tr>
+<tr><td>mapr</td><td>default</td><td>select * from fact_tables.subscription_statuses a join fact_tables.subscription_statuses b on a.fk_subscription=b.flk_subscription limit 10</td><td>QUERY</td><td>2017-03-01 14:40:46.320741000</td><td>2017-03-01 14:40:46.332838000</td><td>N/A</td><td>EXCEPTION</td><td>0</td><td><a href='/query_profile?query_id=f84a77bf4fcbbd64:f6cede71d9a1aa92'>Profile</a></td></tr>
+<tr><td>mapr</td><td>default</td><td>show tables</td><td>DDL</td><td>2017-03-01 10:50:39.033113000</td><td>2017-03-01 10:50:39.048784000</td><td>N/A</td><td>FINISHED</td><td>10</td><td><a href='/query_profile?query_id=3048d34bcb1e00b4:2f963150047ec9ae'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>SELECT (CAST(CAST(CAST(CAST((6 + DATEDIFF(FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`time`) AS BIGINT)), CONCAT(CAST(YEAR(FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`time`) AS BIGINT))) AS STRING), '-01-01 00:00:00')) + 1 + IF(7<0, PMOD((7 + (1 + IF(7<0, PMOD((IF(7<0, PMOD(DATEDIFF(TO_DATE(CONCAT(CAST(YEAR(FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`time`) AS BIGINT))) AS STRING), '-01-01 00:00:00')), TO_DATE('1995-01-01')),7)-7, PMOD(DATEDIFF(TO_DATE(CONCAT(CAST(YEAR(FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`time`) AS BIGINT))) AS STRING), '-01-01 00:00:00')), TO_DATE('1995-01-01')), 7)) + 7),7)-7, PMOD((IF(7<0, PMOD(DATEDIFF(TO_DATE(CONCAT(CAST(YEAR(FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`time`) AS BIGINT))) AS STRING), '-01-01 00:00:00')), TO_DATE('1995-01-01')),7)-7, PMOD(DATEDIFF(TO_DATE(CONCAT(CAST(YEAR(FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`time`) AS BIGINT))) AS STRING), '-01-01 00:00:00')), TO_DATE('1995-01-01')), 7)) + 7), 7))) - 2 ),7)-7, PMOD((7 + (1 + IF(7<0, PMOD((IF(7<0, PMOD(DATEDIFF(TO_DATE(CONCAT(CAST(YEAR(FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`time`) AS BIGINT))) AS STRING), '-01-01 00:00:00')), TO_DATE('1995-01-01')),7)-7, PMOD(DATEDIFF(TO_DATE(CONCAT(CAST(YEAR(FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`time`) AS BIGINT))) AS STRING), '-01-01 00:00:00')), TO_DATE('1995-01-01')), 7)) + 7),7)-7, PMOD((IF(7<0, PMOD(DATEDIFF(TO_DATE(CONCAT(CAST(YEAR(FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`time`) AS BIGINT))) AS STRING), '-01-01 00:00:00')), TO_DATE('1995-01-01')),7)-7, PMOD(DATEDIFF(TO_DATE(CONCAT(CAST(YEAR(FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`time`) AS BIGINT))) AS STRING), '-01-01 00:00:00')), TO_DATE('1995-01-01')), 7)) + 7), 7))) - 2 ), 7))) / 7 AS BIGINT) AS STRING) AS DOUBLE) AS BIGINT) - 1) AS `calculation_450359989260685316`,
+  (CASE WHEN (FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`install_time`) AS BIGINT)) < FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`time`) AS BIGINT))) THEN 'TRUE' WHEN (FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`install_time`) AS BIGINT)) = FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`time`) AS BIGINT))) THEN 'TRUE' ELSE 'FALSE' END) AS `calculation_597008447475421184`,
+  1 AS `number_of_records`,
+  `adjust_partitioned_by_week`.`activity_kind` AS `activity_kind`,
+  `adjust_partitioned_by_week`.`adgroup` AS `adgroup`,
+  `custom_sql_query`.`adid` AS `adid__custom_sql_query_`,
+  `adjust_partitioned_by_week`.`adid` AS `adid`,
+  `adjust_partitioned_by_week`.`bundle` AS `bundle`,
+  `adjust_partitioned_by_week`.`campaign` AS `campaign`,
+  FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`click_time`) AS BIGINT)) AS `click_time`,
+  `adjust_partitioned_by_week`.`cooking_step` AS `cooking_step`,
+  `adjust_partitioned_by_week`.`country` AS `country`,
+  `adjust_partitioned_by_week`.`creative` AS `creative`,
+  `adjust_partitioned_by_week`.`currency` AS `currency`,
+  `adjust_partitioned_by_week`.`customer_id` AS `customer_id`,
+  `adjust_partitioned_by_week`.`device_name` AS `device_name`,
+  `adjust_partitioned_by_week`.`environment` AS `environment`,
+  `adjust_partitioned_by_week`.`event` AS `event`,
+  `adjust_partitioned_by_week`.`fk_date` AS `fk_date`,
+  `adjust_partitioned_by_week`.`fk_imported_at` AS `fk_imported_at`,
+  `adjust_partitioned_by_week`.`freebie` AS `freebie`,
+  `adjust_partitioned_by_week`.`handle` AS `handle`,
+  `adjust_partitioned_by_week`.`hf_week` AS `hf_week`,
+  `adjust_partitioned_by_week`.`idfa` AS `idfa`,
+  `adjust_partitioned_by_week`.`idfv` AS `idfv`,
+  FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`install_time`) AS BIGINT)) AS `install_time`,
+  `custom_sql_query`.`isloginandregistered` AS `isloginandregistered`,
+  `adjust_partitioned_by_week`.`iso_week` AS `iso_week`,
+  `adjust_partitioned_by_week`.`last_time_spent` AS `last_time_spent`,
+  `adjust_partitioned_by_week`.`network` AS `network`,
+  `adjust_partitioned_by_week`.`os` AS `os`,
+  `adjust_partitioned_by_week`.`product_name` AS `product_name`,
+  `adjust_partitioned_by_week`.`rate` AS `rate`,
+  `adjust_partitioned_by_week`.`recipe_id` AS `recipe_id`,
+  `adjust_partitioned_by_week`.`recipe_name` AS `recipe_name`,
+  `adjust_partitioned_by_week`.`revenue` AS `revenue`,
+  `adjust_partitioned_by_week`.`screen_name` AS `screen_name`,
+  `adjust_partitioned_by_week`.`search_query` AS `search_query`,
+  `adjust_partitioned_by_week`.`shop_country_code` AS `shop_country_code`,
+  `adjust_partitioned_by_week`.`shortcut` AS `shortcut`,
+  `adjust_partitioned_by_week`.`social_network` AS `social_network`,
+  `adjust_partitioned_by_week`.`subscription_id` AS `subscription_id`,
+  FROM_UNIXTIME(CAST((`adjust_partitioned_by_week`.`time`) AS BIGINT)) AS `time`,
+  `adjust_partitioned_by_week`.`time_spent` AS `time_spent`,
+  `adjust_partitioned_by_week`.`timer` AS `timer`,
+  `adjust_partitioned_by_week`.`timezone` AS `timezone`,
+  `adjust_partitioned_by_week`.`tracking_enabled` AS `tracking_enabled`,
+  `adjust_partitioned_by_week`.`transaction_id` AS `transaction_id`,
+  `adjust_partitioned_by_week`.`url` AS `url`,
+  `adjust_partitioned_by_week`.`user_agent` AS `user_agent`,
+  `adjust_partitioned_by_week`.`voucher_id` AS `voucher_id`
+FROM `adjust`.`adjust_partitioned_by_week` `adjust_partitioned_by_week`
+  LEFT OUTER JOIN (
+  select a.adid, if (b.status*a.status =0,'No','Yes') IsLoginAndRegistered from
+
+  --select all customers with a least one registered event
+  (select adid,  sum(if (event = 'registered' , 1 , 0 )) as status from
+  adjust.adjust_partitioned_by_week
+  group by adid ) as a
+  inner join
+
+  --select all customers with a least one login event
+  (select adid,  sum(if (event = 'login' , 1 , 0 )) as status from
+  adjust.adjust_partitioned_by_week
+  group by adid
+   ) as b
+  on a.adid=b.adid
+) `custom_sql_query` ON (`adjust_partitioned_by_week`.`adid` = `custom_sql_query`.`adid`)
+WHERE (((`adjust_partitioned_by_week`.`event` IN ('FbLogin', 'FbRegistered', 'calendarPausedSubscription', 'calendarUnpausedSubscription', 'cart', 'checkoutPage', 'checkoutPageAddress', 'checkoutPageLoggedIn', 'checkoutPageLogin', 'checkoutPagePayment', 'checkoutPageRegister', 'checkoutPageSummary', 'confirmReactivation', 'finishCookingMode', 'finishIllustrationsOnboarding', 'freebieSent', 'guestIllustrationsOnboarding', 'install', 'login', 'mealChoice', 'openShop', 'pausedSubscription', 'playKitchenTipsVideo', 'recipeFavorite', 'recipeShare', 'registered', 'session', 'startCheckoutWebflow', 'startCookingMode', 'startIllustrationsOnboarding', 'successPage', 'unpausedSubscription', CONCAT(CAST(UNHEX('e2808b') AS string), 'pausedSubscription'), CONCAT(CAST(UNHEX('e2808b') AS string), 'unpausedSubscription'))) OR (`adjust_partitioned_by_week`.`event` IS NULL)) AND (`adjust_partitioned_by_week`.`iso_week` IN ('2016-W44', '2016-W45', '2016-W46', '2016-W47', '2016-W48', '2016-W49', '2016-W50', '2016-W51', '2016-W52', '2017-W01', '2017-W02')))</td><td>QUERY</td><td>2017-02-28 22:16:23.947510000</td><td>2017-02-28 22:30:14.162053000</td><td>8142 / 8142 ( 100%)</td><td>FINISHED</td><td>16407926</td><td><a href='/query_profile?query_id=c64b6624c65e033a:b43fc87bb59d0584'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>SELECT `adjust_partitioned_by_week`.`iso_week` AS `iso_week`
+FROM `adjust`.`adjust_partitioned_by_week` `adjust_partitioned_by_week`
+GROUP BY 1
+LIMIT 22</td><td>QUERY</td><td>2017-02-28 22:16:21.551968000</td><td>2017-02-28 22:16:23.849621000</td><td>3687 / 3687 ( 100%)</td><td>FINISHED</td><td>22</td><td><a href='/query_profile?query_id=8a4ff88fe42a8f45:7d277565c03b86ac'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>SELECT `adjust_partitioned_by_week`.`event` AS `event`
+FROM `adjust`.`adjust_partitioned_by_week` `adjust_partitioned_by_week`
+GROUP BY 1
+LIMIT 68</td><td>QUERY</td><td>2017-02-28 22:16:17.967520000</td><td>2017-02-28 22:16:21.474212000</td><td>3687 / 3687 ( 100%)</td><td>FINISHED</td><td>68</td><td><a href='/query_profile?query_id=dc42034f74f29a07:a1c5f8c33d1d7cb7'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>SELECT *
+FROM (
+  select a.adid, if (b.status*a.status =0,'No','Yes') IsLoginAndRegistered from
+
+  --select all customers with a least one registered event
+  (select adid,  sum(if (event = 'registered' , 1 , 0 )) as status from
+  adjust.adjust_partitioned_by_week
+  group by adid ) as a
+  inner join
+
+  --select all customers with a least one login event
+  (select adid,  sum(if (event = 'login' , 1 , 0 )) as status from
+  adjust.adjust_partitioned_by_week
+  group by adid
+   ) as b
+  on a.adid=b.adid
+) `custom_sql_query`
+LIMIT 0</td><td>QUERY</td><td>2017-02-28 22:16:17.322807000</td><td>2017-02-28 22:16:17.492578000</td><td>N/A</td><td>FINISHED</td><td>0</td><td><a href='/query_profile?query_id=8644d3672885d50f:8710672a6a019782'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>DESCRIBE `adjust`.`adjust_partitioned_by_week`</td><td>DDL</td><td>2017-02-28 22:16:17.303606000</td><td>2017-02-28 22:16:17.305786000</td><td>N/A</td><td>FINISHED</td><td>54</td><td><a href='/query_profile?query_id=5e42100890f3423d:9754de56f69346ab'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>GET_TABLES</td><td>QUERY</td><td>2017-02-28 22:16:17.294640000</td><td>2017-02-28 22:16:17.298969000</td><td>N/A</td><td>FINISHED</td><td>7</td><td><a href='/query_profile?query_id=4e4f51a9c3b89298:8985cd517d3506a4'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>GET_TABLES</td><td>QUERY</td><td>2017-02-28 22:16:17.290088000</td><td>2017-02-28 22:16:17.292409000</td><td>N/A</td><td>FINISHED</td><td>8</td><td><a href='/query_profile?query_id=5e4225e93fd38c45:b4b780b5388b0bb3'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>GET_TABLES</td><td>QUERY</td><td>2017-02-28 22:16:17.284173000</td><td>2017-02-28 22:16:17.287769000</td><td>N/A</td><td>FINISHED</td><td>28</td><td><a href='/query_profile?query_id=ec4cc680e77dc91c:c762c8c2af319785'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>GET_TABLES</td><td>QUERY</td><td>2017-02-28 22:16:17.280229000</td><td>2017-02-28 22:16:17.281990000</td><td>N/A</td><td>FINISHED</td><td>1</td><td><a href='/query_profile?query_id=af4e2c5957f0854c:87194bc2004db6ab'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>GET_TABLES</td><td>QUERY</td><td>2017-02-28 22:16:17.276014000</td><td>2017-02-28 22:16:17.278038000</td><td>N/A</td><td>FINISHED</td><td>4</td><td><a href='/query_profile?query_id=e432756c06c59be:9f5a7537c530099'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>GET_TABLES</td><td>QUERY</td><td>2017-02-28 22:16:17.271570000</td><td>2017-02-28 22:16:17.273742000</td><td>N/A</td><td>FINISHED</td><td>4</td><td><a href='/query_profile?query_id=b5474886ab8d5450:a6d6e6d358ad8c9e'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>GET_TABLES</td><td>QUERY</td><td>2017-02-28 22:16:17.267368000</td><td>2017-02-28 22:16:17.269361000</td><td>N/A</td><td>FINISHED</td><td>5</td><td><a href='/query_profile?query_id=ee48d30d405a224f:3b1f68344243bbae'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>GET_TABLES</td><td>QUERY</td><td>2017-02-28 22:16:17.259813000</td><td>2017-02-28 22:16:17.265092000</td><td>N/A</td><td>FINISHED</td><td>49</td><td><a href='/query_profile?query_id=54086dc7bb7a4e2:e58b5899fba1328f'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>GET_TABLES</td><td>QUERY</td><td>2017-02-28 22:16:17.255375000</td><td>2017-02-28 22:16:17.257616000</td><td>N/A</td><td>FINISHED</td><td>7</td><td><a href='/query_profile?query_id=41443aaa63d5788e:a11bd676c1fdbc9d'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>GET_TABLES</td><td>QUERY</td><td>2017-02-28 22:16:17.250958000</td><td>2017-02-28 22:16:17.253163000</td><td>N/A</td><td>FINISHED</td><td>6</td><td><a href='/query_profile?query_id=d45857022c0d04a:27af88bcef77398f'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>GET_TABLES</td><td>QUERY</td><td>2017-02-28 22:16:17.245387000</td><td>2017-02-28 22:16:17.248713000</td><td>N/A</td><td>FINISHED</td><td>24</td><td><a href='/query_profile?query_id=15433dffca7f63df:2be84ff96eecf1a0'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>GET_TABLES</td><td>QUERY</td><td>2017-02-28 22:16:17.241213000</td><td>2017-02-28 22:16:17.243130000</td><td>N/A</td><td>FINISHED</td><td>4</td><td><a href='/query_profile?query_id=6d44ffa4fa97f717:b5d6d57ff3c0b1a2'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>GET_TABLES</td><td>QUERY</td><td>2017-02-28 22:16:17.235470000</td><td>2017-02-28 22:16:17.238873000</td><td>N/A</td><td>FINISHED</td><td>23</td><td><a href='/query_profile?query_id=15459f1643790801:2a4ae6116a0af98f'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>GET_TABLES</td><td>QUERY</td><td>2017-02-28 22:16:17.230445000</td><td>2017-02-28 22:16:17.233267000</td><td>N/A</td><td>FINISHED</td><td>17</td><td><a href='/query_profile?query_id=5d43a640ed07af81:9f5ad7811cab72bf'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>GET_TABLES</td><td>QUERY</td><td>2017-02-28 22:16:17.225538000</td><td>2017-02-28 22:16:17.228163000</td><td>N/A</td><td>FINISHED</td><td>14</td><td><a href='/query_profile?query_id=834ef301a615d289:f56f63339e5c119b'>Profile</a></td></tr>
+<tr><td></td><td>default</td><td>GET_TABLES</td><td>QUERY</td><td>2017-02-28 22:16:17.220824000</td><td>2017-02-28 22:16:17.223271000</td><td>N/A</td><td>FINISHED</td><td>10</td><td><a href='/query_profile?query_id=da4e1d49dc1ac67a:fcf3d56ad16fb987'>Profile</a></td></tr>
+</table></div></body></html>
