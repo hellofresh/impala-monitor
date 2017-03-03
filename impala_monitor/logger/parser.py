@@ -76,7 +76,8 @@ class ImpalaQueryLogParser(object):
             query_type = cells[3].get_text()
             query_state = cells[7].get_text()
 
-            if query_type not in ['QUERY'] or not query_state in ['FINISHED']:
+            if query_type not in ['QUERY'] or not query_state in ['FINISHED',
+                                                                  'EXCEPTION']:
                 continue
 
             start_time = datetime.strptime(
@@ -103,7 +104,7 @@ class ImpalaQueryLogParser(object):
                 'end_time': end_time,
                 'execution_time': execution_time,
                 'query_id': query_id,
-                'timestamp': int(start_time.timestamp())
+                'timestamp': int(start_time.timestamp()),
             }))
 
         return queries
@@ -127,6 +128,36 @@ class ImpalaQueryLogParser(object):
             query.vcores_allocated = vcores_allocated_matches.group(1)
         else:
             query.vcores_allocated = 0
+
+        if query.state == 'EXCEPTION':
+            exception_message_matches = re.search(
+                'Query Status: ([a-zA-Z \:\/_\-0-9\.]+)', profile
+            )
+
+            if exception_message_matches:
+                query.exception_message = exception_message_matches.group(1)
+
+        if query.state == 'FINISHED':
+            query = self.parse_exec_summary(query, profile)
+
+        return query
+
+    def parse_exec_summary(self, query: Query, profile: str) -> Query:
+        exec_summary_match = re.search(
+            '(?=ExecSummary)(.*)([a-z\sA-Z#\.\-0-9\:_\(\)]+)Query Timeline',
+            profile
+        )
+
+        if not exec_summary_match:
+            return query
+
+        exec_summary = exec_summary_match.group(2)
+
+        if exec_summary:
+            query.exec_summary = exec_summary
+        else:
+            print(query.query_id)
+            exit()
 
         return query
 

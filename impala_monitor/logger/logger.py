@@ -32,13 +32,14 @@ class ElasticFactory(object):
                     "query_id": {"type": "string"},
                     "timestamp": {"type": "date", "format": "epoch_second"},
                     "memory_allocated": {"type": "float"},
-                    "vcores_allocated": {"type": "integer"}
+                    "vcores_allocated": {"type": "integer"},
+                    "exception_message": {"type": "string"},
+                    "exec_summary": {"type": "string"}
                 }
             }
         }
 
         elasticsearch.indices.delete('impala_queries')
-        print(elasticsearch.indices.exists('impala_queries'))
 
         if not elasticsearch.indices.exists('impala_queries'):
             elasticsearch.indices.create('impala_queries')
