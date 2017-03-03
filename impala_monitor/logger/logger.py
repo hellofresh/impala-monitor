@@ -14,26 +14,51 @@ class ElasticFactory(object):
         self.host = host
 
     def create(self) -> Elasticsearch:
-        return Elasticsearch(
+        elasticsearch = Elasticsearch(
             [{'host': self.host, 'port': self.port}]
         )
+
+        mapping = {
+            "query": {
+                "properties": {
+                    "query": {"type": "string"},
+                    "query_type": {"type": "string"},
+                    "state": {"type": "string"},
+                    "fetched_rows": {"type": "integer"},
+                    "user": {"type": "string"},
+                    "start_time": {"type": "string"},
+                    "end_time": {"type": "string"},
+                    "execution_time": {"type": "float"},
+                    "query_id": {"type": "string"},
+                    "timestamp": {"type": "date", "format": "epoch_second"},
+                    "memory_allocated": {"type": "float"},
+                    "vcores_allocated": {"type": "integer"}
+                }
+            }
+        }
+
+        elasticsearch.indices.delete('impala_queries')
+        print(elasticsearch.indices.exists('impala_queries'))
+
+        if not elasticsearch.indices.exists('impala_queries'):
+            elasticsearch.indices.create('impala_queries')
+            elasticsearch.indices.put_mapping(
+                index='impala_queries', doc_type='query', body=mapping
+            )
+
+        return elasticsearch
 
 
 class ImpalaLogger(object):
     def __init__(
             self,
             nodes: list,
-            elastic_host: str,
-            elastic_port: int,
+            elasticsearch: Elasticsearch = None,
             lru_size: int = 5000
     ):
-        self.elastic_port = elastic_port
-        self.elastic_host = elastic_host
         self.nodes = nodes
         self.queries_logged = LRU(lru_size)
-        self.elasticsearch = ElasticFactory(
-            self.elastic_host, self.elastic_port
-        ).create()
+        self.elasticsearch = elasticsearch
 
     def run(self):
         """
@@ -65,7 +90,7 @@ class ImpalaLogger(object):
                 except Exception as e:
                     print("Something went wrong {}".format(e))
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
             futures = {
                 executor.submit(self.query_profiler, query, 2): query for
                 query in queries
@@ -77,8 +102,12 @@ class ImpalaLogger(object):
 
                     # send to elastic
                     self.elasticsearch.index(
-                        index='query_log', doc_type='query', id=query.query_id,
+                        index='impala_queries', doc_type='query', id=query.query_id,
                         body=query.to_dict()
+                    )
+
+                    print("[{}] Query {} indexed".format(
+                        query.start_time, query.query_id)
                     )
 
                 except Exception as e:

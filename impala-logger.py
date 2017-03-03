@@ -2,7 +2,7 @@ import click
 import asyncio
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from impala_monitor.logger.logger import ImpalaLogger
+from impala_monitor.logger.logger import ImpalaLogger, ElasticFactory
 
 
 @click.command()
@@ -13,7 +13,13 @@ from impala_monitor.logger.logger import ImpalaLogger
 @click.option('--elastic-port', help='To which Elastic port should '
                                       'connect', default=9200)
 def monitor(nodes, seconds, elastic_node, elastic_port):
-    monitor = ImpalaLogger(nodes.split(','), elastic_node, elastic_port)
+    elasticsearch = ElasticFactory(elastic_node, elastic_port).create()
+
+    monitor = ImpalaLogger(
+        nodes.split(','), elasticsearch
+    )
+
+
     scheduler = AsyncIOScheduler()
     scheduler.add_job(monitor.run, 'interval', seconds=seconds)
     scheduler.start()

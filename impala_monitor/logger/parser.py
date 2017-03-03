@@ -102,7 +102,8 @@ class ImpalaQueryLogParser(object):
                 'start_time': start_time,
                 'end_time': end_time,
                 'execution_time': execution_time,
-                'query_id': query_id
+                'query_id': query_id,
+                'timestamp': int(start_time.timestamp())
             }))
 
         return queries
