@@ -102,7 +102,7 @@ class ImpalaQueryLogParser(object):
             query_hash = hashlib.sha256(b'{query}'.format(query=query))
 
             queries.append(Query({
-                'query': cells[2].get_text(),
+                'query': query,
                 'query_type': query_type,
                 'state': query_state,
                 'fetched_rows': int(cells[8].get_text()),
