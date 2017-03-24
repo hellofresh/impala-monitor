@@ -34,7 +34,8 @@ class ElasticFactory(object):
                     "memory_allocated": {"type": "float"},
                     "vcores_allocated": {"type": "integer"},
                     "exception_message": {"type": "string"},
-                    "exec_summary": {"type": "string"}
+                    "exec_summary": {"type": "string"},
+                    "query_hash": {"type": "string"}
                 }
             }
         }
