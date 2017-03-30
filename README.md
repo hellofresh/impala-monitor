@@ -11,3 +11,12 @@ impala-monitor.py --nodes=127.0.0.1:25000,128.0.0.1:25000 --seconds=10 --graphit
 ```
 
 You can do `impala-monitor.py --help` to know more about each argument.
+
+### Graphana dashboard
+
+Here you have an example graphana dashboard with some interesting stats, it looks like:
+
+![Number of queries](http://i.imgur.com/JYs8xsR.png)
+![Memory usage per node](http://i.imgur.com/KqBkWW0.png)
+
+And here you can find an example: 
