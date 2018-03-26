@@ -38,7 +38,7 @@ class ImpalaMonitor(object):
         url = "{schema}{ip}/{path}".format(
             schema='http://',
             ip=node,
-            path='jsonmetrics'
+            path='metrics?json'
         )
 
         request = requests.get(url)
