@@ -1,4 +1,6 @@
 import re
+import hashlib
+
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 
@@ -95,8 +97,12 @@ class ImpalaQueryLogParser(object):
                 cells[9].find('a', href=True).get('href')
             )
 
+            query = cells[2].get_text()
+            # create a unique hash per query to find duplicates.
+            query_hash = hashlib.sha256(b'{query}'.format(query=query))
+
             queries.append(Query({
-                'query': cells[2].get_text(),
+                'query': query,
                 'query_type': query_type,
                 'state': query_state,
                 'fetched_rows': int(cells[8].get_text()),
@@ -106,6 +112,7 @@ class ImpalaQueryLogParser(object):
                 'execution_time': execution_time,
                 'query_id': query_id,
                 'timestamp': int(start_time.timestamp()),
+                'query_hash': query_hash.hexdigest()
             }))
 
         return queries
